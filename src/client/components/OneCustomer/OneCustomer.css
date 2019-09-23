@@ -1,0 +1,41 @@
+.header {
+  display: flex;
+  min-width: 20%;
+  justify-content: start;
+  text-transform: capitalize;
+}
+.item {
+  margin-right: 5%;
+}
+.carContainer {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  list-style-type: none;
+}
+.btnContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.btn {
+  position: relative;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+.add {
+  width: 20%;
+  position: relative;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 70%;
+}
+.hideNum {
+  list-style-type: none;
+}
+
+

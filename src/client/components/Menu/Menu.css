@@ -1,0 +1,36 @@
+#reactMenu {
+    background-color: #3c3f41;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+.authUserInfo {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+.authUserInfo img {
+    margin-right: 10px;
+    border-radius: 50%;
+    width: 60px;
+}
+.authUserInfo span::first-letter {
+    text-transform: capitalize;
+}
+.authUserInfo span {
+    padding-right: 10px;
+}
+a {
+    color: white;
+    text-decoration: none;
+}
+a:hover {
+    color: burlywood;
+}
+span {
+    color: white;
+}
+.active {
+    color: #bca967;
+}

@@ -1,0 +1,36 @@
+.customerContainer {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.customerCard {
+    margin-top: 3%;
+    border: 2px solid #3c3f41;
+    width: 80%;
+    padding: 0 5% 2% 5%;
+    -moz-box-shadow: inset 0 0 10px dimgrey;
+    -webkit-box-shadow: inset 0 0 10px dimgrey;
+    box-shadow: 0 0 10px 10px dimgrey;
+    border-radius: 10px;
+    background-color: #595b5d;
+    list-style-type: none;
+}
+.header, .footer {
+    display: flex;
+    flex-direction: column;
+    min-width: 20%;
+    justify-content: start;
+    text-transform: capitalize;
+}
+.item {
+    margin-right: 5%;
+}
+.carContainer {
+    position: relative;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
