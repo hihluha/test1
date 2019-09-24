@@ -16,8 +16,4 @@ router.get('/customer', isAuth.isAuthenticated, customerController.customer);
 
 router.post('/savecar', isAuth.isAuthenticated, customerController.saveCar);
 
-router.patch('/editcar', isAuth.isAuthenticated, customerController.editCar);
-
-router.delete('/deletecar', isAuth.isAuthenticated, customerController.deleteCar);
-
 module.exports = router;

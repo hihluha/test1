@@ -32,25 +32,16 @@ exports.saveOrder = (req, res) => {
         .save()
         .then(order => res.json(order))
         .catch(err => res.send(err));
-   // Customer.findByIdAndUpdate(
-   //      {id: req.body.id},
-   //      { $push: {orders: newOrder} } ,
-   //      { new: true },
-   //      (err, updateOrder) => {
-   //          if (err) return res.send(err);
-   //
-   //          res.send(updateOrder);
-   //      }
-   //  );
 };
+
+
 
 exports.editOrder = (req, res) => {
     Order.findByIdAndUpdate(
-        req.body.id,
+        {_id: req.body.id},
         {
-            amount: req.body.data.amount,
-            status: req.body.data.status,
-            date_created: req.body.data.date_created
+            amount: req.body.amount,
+            status: req.body.status
         },
         { new: true },
         (err, updateOrder) => {
@@ -61,8 +52,33 @@ exports.editOrder = (req, res) => {
     );
 };
 
+exports.editCar = (req, res) => {
+    Car.findByIdAndUpdate(
+        {_id: req.body.id},
+        {
+            make: req.body.makeCar,
+            model: req.body.modelCar,
+            year: req.body.yearCar,
+            vin: req.body.vinCar
+        },
+        { new: true },
+        (err, updateCar) => {
+            if (err) return res.send(err);
+            console.log(updateCar, "update");
+            res.send(updateCar);
+        }
+    );
+};
+
 exports.deleteOrder = (req, res) => {
     Order.findByIdAndDelete(req.query.id, (err, car) => {
+        if (err) return res.send(err);
+        res.send(car);
+    });
+};
+
+exports.deleteCar = (req, res) => {
+    Car.findByIdAndDelete(req.query.id, (err, car) => {
         if (err) return res.send(err);
         res.send(car);
     });

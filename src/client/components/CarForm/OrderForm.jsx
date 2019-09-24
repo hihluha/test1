@@ -6,22 +6,6 @@ import { saveCarOROrder } from "../../actions/carAndOrderAction";
 import "../Login/Login.css";
 
 function OrderForm({ show, customerID, saveCarOROrder, idCar, changeShowFormOrder }) {
-  const [customer, onChange] = useState({
-    customerID,
-    idCar,
-    amount: "",
-    status: "",
-    date_created: ""
-  });
-
-  const [submit, setSubmit] = useState({
-    amount: false,
-    status: false
-  });
-  const [error, setError] = useState({
-    amount: null,
-    status: null
-  });
 
   const arr = [
     "января",
@@ -42,6 +26,23 @@ function OrderForm({ show, customerID, saveCarOROrder, idCar, changeShowFormOrde
   const nowMonth = arr[nowDate.getMonth()];
   const nowYear = nowDate.getFullYear();
   const fullDate = `${today} ${nowMonth} ${nowYear}`;
+
+  const [customer, onChange] = useState({
+    customerID,
+    idCar,
+    amount: "",
+    status: "",
+    date_created: fullDate
+  });
+
+  const [submit, setSubmit] = useState({
+    amount: false,
+    status: false
+  });
+  const [error, setError] = useState({
+    amount: null,
+    status: null
+  });
 
   return (
     <div className={show ? "logForm form" : "hide"}>
@@ -102,7 +103,7 @@ function OrderForm({ show, customerID, saveCarOROrder, idCar, changeShowFormOrde
                 ...customer,
                 amount: "",
                 status: "",
-                date_created: ""
+                date_created: fullDate
               });
               setSubmit({
                 ...submit,

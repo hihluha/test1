@@ -20,7 +20,7 @@ const OrderSchema = new Schema({
         ref: "Cars"
     },
     date_created: {
-        type: Date,
+        type: String,
         default: Date.now
     }
 });

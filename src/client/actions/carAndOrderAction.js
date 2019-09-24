@@ -86,10 +86,10 @@ export function saveCarOROrder(name, data) {
 export function editCarOROrder(name, id) {
   const urlWorkEdit =
     name === "car"
-      ? "http://localhost:5000/customers/editcar"
+      ? "http://localhost:5000/orders/editcar"
       : "http://localhost:5000/orders/editorder";
   const typeChoose =
-    urlWorkEdit === "http://localhost:5000/customers/editcar"
+    urlWorkEdit === "http://localhost:5000/orders/editcar"
       ? EDIT_CAR
       : EDIT_ORDER;
   return dispatch => {
@@ -112,10 +112,10 @@ export function editCarOROrder(name, id) {
 export function deleteCarOROrder(name, id) {
   const urlWorkDelete =
     name === "car"
-      ? "http://localhost:5000/customers/deletecar"
+      ? "http://localhost:5000/orders/deletecar"
       : "http://localhost:5000/orders/deleteorder";
   const typeChoose =
-    urlWorkDelete === "http://localhost:5000/customers/deletecar"
+    urlWorkDelete === "http://localhost:5000/orders/deletecar"
       ? DELETE_CAR
       : DELETE_ORDER;
   return dispatch => {

@@ -35,41 +35,6 @@ exports.saveCar = (req, res) => {
   save()
       .then(car => res.json(car))
       .catch(err => res.send(err));
-
-  // Car.findByIdAndUpdate(
-  //     req.body.id,
-  //     { $push: { cars: newCar } },
-  //     { new: true },
-  //     (err, updateCustomer) => {
-  //       if (err) return res.send(err);
-  //       res.send(updateCustomer);
-  //     }
-  // );
-};
-
-exports.editCar = (req, res) => {
-  Car.findByIdAndUpdate(
-      req.body.id,
-      {
-        make: req.body.data.make,
-        model: req.body.data.model,
-        year: req.body.data.year,
-        vin: req.body.data.vin
-      },
-      { new: true },
-      (err, updateCar) => {
-        if (err) return res.send(err);
-        console.log(updateCar, "update");
-        res.send(updateCar);
-      }
-  );
-};
-
-exports.deleteCar = (req, res) => {
-  Car.findByIdAndDelete(req.query.id, (err, car) => {
-    if (err) return res.send(err);
-    res.send(car);
-  });
 };
 
 exports.customer = (req, res) => {

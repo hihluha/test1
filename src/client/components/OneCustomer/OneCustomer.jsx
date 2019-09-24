@@ -5,7 +5,8 @@ import { withRouter } from "react-router-dom";
 import {
   editCarOROrder,
   deleteCarOROrder,
-  getOrders
+  getOrders,
+  getCars
 } from "../../actions/carAndOrderAction";
 
 import CarForm from "../CarForm/CarForm";
@@ -19,90 +20,109 @@ function OneCustomer({
   match,
   customer,
   cars,
+  getCars,
   orders,
   getOrders,
   editCarOROrder,
   deleteCarOROrder
 }) {
-
   const [showForm, changeShowForm] = useState(false);
   const [showFormOrder, changeShowFormOrder] = useState(false);
 
   useEffect(() => {
     getOrders();
+      getCars();
   }, []);
 
-  const carForm = cars !== null ? cars.map(car => {
+  const carForm =
+    cars !== null
+      ? cars.map(car => {
+          const ordersForCar =
+            orders !== null
+              ? orders.map(order => {
+                  if (car._id === order.cars) {
+                    return (
+                      <ol className="customerCard">
+                        <div className="carContainer">
+                          <li className="header">
+                            <h3>{order.amount}</h3>
+                            <h3>{order.status}</h3>
+                            <h3>{order.date_created}</h3>
+                          </li>
+                          <div className="btnContainer">
+                            <button
+                              className="btn"
+                              onClick={() => {
+                                editCarOROrder("order", order._id);
+                              }}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              className="btn"
+                              onClick={() => {
+                                deleteCarOROrder("order", order._id);
+                              }}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      </ol>
+                    );
+                  }
+                })
+              : "There are no orders";
 
-    const ordersForCar = orders !== null ? orders.map((order) => {
-
-      if(car._id === order.cars) {
-
-        return ( <ol className="customerCard">
-          <div className="carContainer">
-            <li className="header">
-              <h3>{order.amount}</h3>
-              <h3>{order.status}</h3>
-              <h3>{order.date_created}</h3>
-            </li>
-            <div className="btnContainer">
-              <button className="btn">Edit</button>
-              <button className="btn">Delete</button>
-            </div>
-          </div>
-          <OrderForm
-              show={showFormOrder}
-              changeShowFormOrder={changeShowFormOrder}
-              customerID={match.params.id}
-              idCar={car._id}
-          />
-        </ol>)
-      } }) : "There are no orders";
-
-        if(customer[0]._id === car.customer) {
-
-          return (
+          if (customer !== null && customer[0]._id === car.customer) {
+            return (
               <div className="customerCard">
                 <div className="carContainer">
                   <li className="header" key={car._id}>
                     <h3>{`${car.make} ${car.model}, ${car.year}`}</h3>
-                    <h3>
-                      "VinCode:" {car.vin}
-                    </h3>
+                    <h3>"VinCode:" {car.vin}</h3>
                   </li>
                   <div className="btnContainer">
                     <button
-                        className="btn"
-                        onClick={() => {
-                          editCarOROrder(name, car._id);
-                        }}
+                      className="btn"
+                      onClick={() => {
+                        editCarOROrder("car", car._id);
+                      }}
                     >
                       Edit
                     </button>
                     <button
-                        className="btn"
-                        onClick={() => {
-                          deleteCarOROrder(name, car._id);
-                        }}
+                      className="btn"
+                      onClick={() => {
+                        deleteCarOROrder("car", car._id);
+                        getCars();
+                      }}
                     >
                       Delete
                     </button>
                   </div>
-
                 </div>
                 {ordersForCar}
                 <button
-                    className="submitForm add"
-                    type="submit"
-                    onClick={() => {
-                      changeShowFormOrder(!showFormOrder);
-                    }}
+                  className="submitForm add"
+                  type="submit"
+                  onClick={() => {
+                    changeShowFormOrder(!showFormOrder);
+                  }}
                 >
                   Add Order
                 </button>
+                <OrderForm
+                  show={showFormOrder}
+                  changeShowFormOrder={changeShowFormOrder}
+                  customerID={match.params.id}
+                  idCar={car._id}
+                />
               </div>
-          );
-        }}) : "There are no cars";
+            );
+          }
+        })
+      : "There are no cars";
 
   return (
     <div>
@@ -120,9 +140,7 @@ function OneCustomer({
           {cars === null || cars.length === 0 ? (
             <h3>There are no cars</h3>
           ) : (
-            <ol className="customerCard">
-              {carForm}
-            </ol>
+            <ol className="customerCard">{carForm}</ol>
           )}
         </li>
 
@@ -158,7 +176,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   editCarOROrder,
   deleteCarOROrder,
-  getOrders
+  getOrders,
+  getCars
 };
 
 export default withRouter(
