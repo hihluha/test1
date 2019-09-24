@@ -1,16 +1,60 @@
 import {
+  GET_CARS,
   EDIT_CAR,
   DELETE_CAR,
   SAVE_CAR,
+  GET_ORDERS,
   EDIT_ORDER,
   DELETE_ORDER,
   SAVE_ORDER,
-  GET_ERRORS
+  GET_ERRORS,
+  GET_CUSTOMERS
 } from "./types";
 
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
+
+export function getCars() {
+  return dispatch => {
+    return axios
+      .get("http://localhost:5000/orders/getcars")
+      .then(res => {
+        dispatch({
+          type: GET_CARS,
+          payload: res.data
+        });
+      })
+      .catch(err => {
+        dispatch({
+          type: GET_ERRORS,
+          payload: err.request.response
+        });
+        history.push("/");
+      });
+  };
+}
+
+export function getOrders() {
+
+  return dispatch => {
+    return axios
+        .get("http://localhost:5000/orders/getorders")
+        .then(res => {
+          dispatch({
+            type: GET_ORDERS,
+            payload: res.data
+          });
+        })
+        .catch(err => {
+          dispatch({
+            type: GET_ERRORS,
+            payload: err.request.response
+          });
+          history.push("/");
+        });
+  };
+}
 
 export function saveCarOROrder(name, data) {
   const urlWork =

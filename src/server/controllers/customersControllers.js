@@ -27,18 +27,24 @@ exports.saveCar = (req, res) => {
     make: req.body.makeCar,
     model: req.body.modelCar,
     year: req.body.yearCar,
-    vin: req.body.vinCar
+    vin: req.body.vinCar,
+    customer: mongoose.Types.ObjectId(req.body.customerID)
   });
 
-  Customer.findByIdAndUpdate(
-      req.body.id,
-      { $push: { cars: newCar } },
-      { new: true },
-      (err, updateCustomer) => {
-        if (err) return res.send(err);
-        res.send(updateCustomer);
-      }
-  );
+  newCar.
+  save()
+      .then(car => res.json(car))
+      .catch(err => res.send(err));
+
+  // Car.findByIdAndUpdate(
+  //     req.body.id,
+  //     { $push: { cars: newCar } },
+  //     { new: true },
+  //     (err, updateCustomer) => {
+  //       if (err) return res.send(err);
+  //       res.send(updateCustomer);
+  //     }
+  // );
 };
 
 exports.editCar = (req, res) => {

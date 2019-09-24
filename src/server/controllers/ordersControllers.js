@@ -1,27 +1,47 @@
 const mongoose = require("mongoose");
 
-const Customer = require("../models/Customers");
 const Car = require("../models/Car");
 const Order = require("../models/Order");
 
 
+exports.cars = (req, res) => {
+
+    Car.find({}, (err, customers) => {
+        if (err) throw err;
+        res.status(200).send(customers);
+    })
+};
+
+exports.orders = (req, res) => {
+
+    Order.find({}, (err, customers) => {
+        if (err) throw err;
+        res.status(200).send(customers);
+    })
+};
 exports.saveOrder = (req, res) => {
     const newOrder = new Order({
         amount: req.body.amount,
         status: req.body.status,
-        date_created: req.body.date_created
+        date_created: req.body.date_created,
+        customer: mongoose.Types.ObjectId(req.body.customerID),
+        cars: mongoose.Types.ObjectId(req.body.idCar),
     });
 
-   Customer.findByIdAndUpdate(
-        {id: req.body.id},
-        { $push: {orders: newOrder} } ,
-        { new: true },
-        (err, updateOrder) => {
-            if (err) return res.send(err);
-
-            res.send(updateOrder);
-        }
-    );
+    newOrder
+        .save()
+        .then(order => res.json(order))
+        .catch(err => res.send(err));
+   // Customer.findByIdAndUpdate(
+   //      {id: req.body.id},
+   //      { $push: {orders: newOrder} } ,
+   //      { new: true },
+   //      (err, updateOrder) => {
+   //          if (err) return res.send(err);
+   //
+   //          res.send(updateOrder);
+   //      }
+   //  );
 };
 
 exports.editOrder = (req, res) => {

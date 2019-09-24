@@ -1,7 +1,9 @@
 import {
+  GET_CARS,
   EDIT_CAR,
   DELETE_CAR,
   SAVE_CAR,
+  GET_ORDERS,
   EDIT_ORDER,
   DELETE_ORDER,
   SAVE_ORDER,
@@ -16,40 +18,46 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+      case GET_CARS:
+          return {
+              ...state,
+              cars: action.payload
+          };
     case SAVE_CAR:
       return {
         ...state,
         cars: [...state.cars, action.payload]
       };
     case EDIT_CAR:
-        return {
-            ...state,
-            cars: [...state.cars, action.payload]
-        };
+      return {
+        ...state,
+        cars: [...state.cars, action.payload]
+      };
     case DELETE_CAR:
-        return {
-            ...state,
-            cars: [
-                ...state.cars.filter(val => val.id !== action.payload)
-            ]
-        };
+      return {
+        ...state,
+        cars: [...state.cars.filter(val => val.id !== action.payload)]
+      };
+    case GET_ORDERS:
+      return {
+        ...state,
+        orders: action.payload
+      };
     case SAVE_ORDER:
       return {
         ...state,
-          orders: [...state.orders, action.payload]
+        orders: [...state.orders, action.payload]
       };
     case EDIT_ORDER:
-        return {
-            ...state,
-            orders: [...state.orders, action.payload]
-        };
+      return {
+        ...state,
+        orders: [...state.orders, action.payload]
+      };
     case DELETE_ORDER:
-        return {
-            ...state,
-            orders: [
-                ...state.orders.filter(val => val.id !== action.payload)
-            ]
-        };
+      return {
+        ...state,
+        orders: [...state.orders.filter(val => val.id !== action.payload)]
+      };
     case GET_ERRORS:
       return {
         ...state,

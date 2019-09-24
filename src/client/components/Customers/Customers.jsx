@@ -3,31 +3,38 @@ import connect from "react-redux/es/connect/connect";
 import { withRouter, NavLink } from "react-router-dom";
 
 import { getCustomers, getCustomer } from "../../actions/customersAction";
+import { getCars } from "../../actions/carAndOrderAction";
 
 import "./Customers.css";
 import "../OneCustomer/OneCustomer.css";
 
-function Customers({ getCustomers, customers, getCustomer, history }) {
+function Customers({ getCustomers, getCars, customers, cars, getCustomer, history }) {
   useEffect(() => {
     getCustomers(history);
+      getCars();
   }, []);
 
+
   const createEachCustomerCard =
-    customers === null
+      customers === null
       ? "There are no users"
-      : customers.map((customer, index) => {
-          const customerCars =
-            customer.cars === undefined || customer.cars.length === 0
+      : customers.map(customer => {
+
+              const customerCars =
+              (cars === null || cars.length === 0)
               ? "There are no cars"
-              : customer.cars.map(car => {
-                  return (
-                    <div className="customerCard" key={customer._id}>
-                      <h2>
-                        {car.make} - {car.model}, {car.year}
-                      </h2>
-                      <p>{car.vinCar}</p>
-                    </div>
-                  );
+              : cars.map(car => {
+                  if(customer._id === car.customer) {
+                      return (
+                          <div className="customerCard" key={car._id}>
+                              <h2>
+                                  {car.make} - {car.model}, {car.year}
+                              </h2>
+                              <p>{car.vin}</p>
+                          </div>
+                      );
+                  }
+
                 });
           return (
             <NavLink
@@ -38,7 +45,7 @@ function Customers({ getCustomers, customers, getCustomer, history }) {
                 getCustomer(customer._id, history);
               }}
             >
-              <div className="header">
+              <div className="header" key={customer._id}>
                 <h2 className="item">{`${customer.firstName} ${customer.lastName}`}</h2>
                 <p>Related cars:</p>
                 {customerCars === "There are no cars" ? (
@@ -49,8 +56,9 @@ function Customers({ getCustomers, customers, getCustomer, history }) {
                   </ol>
                 )}
 
-                  <button type="button"  className="submitForm add">See more</button>
-
+                <button type="button" className="submitForm add">
+                  See more
+                </button>
               </div>
             </NavLink>
           );
@@ -62,16 +70,20 @@ function Customers({ getCustomers, customers, getCustomer, history }) {
 const mapStateToProps = state => {
   return {
     customers: state.customer.customers,
-    errors: state.customer.errors
+    errors: state.customer.errors,
+    cars: state.carAndOrder.cars
   };
 };
 
 const mapDispatchToProps = {
   getCustomers,
-  getCustomer
+  getCustomer,
+    getCars
 };
 
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Customers));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Customers)
+);

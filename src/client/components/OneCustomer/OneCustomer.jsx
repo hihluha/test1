@@ -4,7 +4,8 @@ import { withRouter } from "react-router-dom";
 
 import {
   editCarOROrder,
-  deleteCarOROrder
+  deleteCarOROrder,
+  getOrders
 } from "../../actions/carAndOrderAction";
 
 import CarForm from "../CarForm/CarForm";
@@ -17,57 +18,79 @@ function OneCustomer({
   history,
   match,
   customer,
+  cars,
+  orders,
+  getOrders,
   editCarOROrder,
   deleteCarOROrder
 }) {
+
   const [showForm, changeShowForm] = useState(false);
   const [showFormOrder, changeShowFormOrder] = useState(false);
 
-  const repeatedForm = (name, items, data1, data2, data3, data4, data5) => {
-    if (items === null || items === undefined) {
-    } else {
-      return items.map(item => {
-        return (
-          <div className="customerCard">
-            <div className="carContainer">
-            <li className="header" key={item._id}>
-              <h3>{`${item[data1]} ${item[data2]}, ${item[data3]}`}</h3>
-              <h3>
-                {[data5]} {item[data4]}
-              </h3>
+  useEffect(() => {
+    getOrders();
+  }, []);
+
+  const carForm = cars !== null ? cars.map(car => {
+
+    const ordersForCar = orders !== null ? orders.map((order) => {
+
+      if(car._id === order.cars) {
+
+        return ( <ol className="customerCard">
+          <div className="carContainer">
+            <li className="header">
+              <h3>{order.amount}</h3>
+              <h3>{order.status}</h3>
+              <h3>{order.date_created}</h3>
             </li>
             <div className="btnContainer">
-              <button
-                className="btn"
-                onClick={() => {
-                  editCarOROrder(name, item._id);
-                }}
-              >
-                Edit
-              </button>
-              <button
-                className="btn"
-                onClick={() => {
-                  deleteCarOROrder(name, item._id);
-                }}
-              >
-                Delete
-              </button>
+              <button className="btn">Edit</button>
+              <button className="btn">Delete</button>
             </div>
-            </div>
-              <ol className="customerCard">
-                {/*{repeatedForm(customer.orders, 'amount', 'status', '', 'date_created', '' )}*/}
+          </div>
+          <OrderForm
+              show={showFormOrder}
+              changeShowFormOrder={changeShowFormOrder}
+              customerID={match.params.id}
+              idCar={car._id}
+          />
+        </ol>)
+      } }) : "There are no orders";
+
+        if(customer[0]._id === car.customer) {
+
+          return (
+              <div className="customerCard">
                 <div className="carContainer">
-                  <li className="header">
-                    <h3>order amount</h3>
-                    <h3>order status</h3>
+                  <li className="header" key={car._id}>
+                    <h3>{`${car.make} ${car.model}, ${car.year}`}</h3>
+                    <h3>
+                      "VinCode:" {car.vin}
+                    </h3>
                   </li>
                   <div className="btnContainer">
-                    <button className="btn">Edit</button>
-                    <button className="btn">Delete</button>
+                    <button
+                        className="btn"
+                        onClick={() => {
+                          editCarOROrder(name, car._id);
+                        }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                        className="btn"
+                        onClick={() => {
+                          deleteCarOROrder(name, car._id);
+                        }}
+                    >
+                      Delete
+                    </button>
                   </div>
-                </div>
 
+                </div>
+                {ordersForCar}
                 <button
                     className="submitForm add"
                     type="submit"
@@ -77,14 +100,9 @@ function OneCustomer({
                 >
                   Add Order
                 </button>
-                <OrderForm show={showFormOrder} id={match.params.id} idCar={item._id}/>
-              </ol>
-            </div>
-
-        );
-      });
-    }
-  };
+              </div>
+          );
+        }}) : "There are no cars";
 
   return (
     <div>
@@ -99,19 +117,11 @@ function OneCustomer({
       <p>Related cars:</p>
       <ol className="hideNum">
         <li key={customer === null ? null : customer[0]._id}>
-          {customer === null || customer[0].cars.length === 0 ? (
+          {cars === null || cars.length === 0 ? (
             <h3>There are no cars</h3>
           ) : (
             <ol className="customerCard">
-              {repeatedForm(
-                "car",
-                customer[0].cars,
-                "make",
-                "model",
-                "year",
-                "vin",
-                "VinCode:"
-              )}
+              {carForm}
             </ol>
           )}
         </li>
@@ -127,7 +137,11 @@ function OneCustomer({
         </button>
       </ol>
 
-      <CarForm show={showForm} id={match.params.id}/>
+      <CarForm
+        show={showForm}
+        changeShowForm={changeShowForm}
+        customerID={match.params.id}
+      />
     </div>
   );
 }
@@ -135,13 +149,16 @@ function OneCustomer({
 const mapStateToProps = state => {
   return {
     customer: state.customer.customer,
-    errors: state.customer.errors
+    errors: state.customer.errors,
+    cars: state.carAndOrder.cars,
+    orders: state.carAndOrder.orders
   };
 };
 
 const mapDispatchToProps = {
   editCarOROrder,
-  deleteCarOROrder
+  deleteCarOROrder,
+  getOrders
 };
 
 export default withRouter(

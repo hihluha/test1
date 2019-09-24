@@ -15,6 +15,10 @@ const OrderSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Customer',
     },
+    cars: {
+        type: Schema.Types.ObjectId,
+        ref: "Cars"
+    },
     date_created: {
         type: Date,
         default: Date.now

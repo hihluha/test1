@@ -5,9 +5,9 @@ import { saveCarOROrder } from "../../actions/carAndOrderAction";
 
 import "../Login/Login.css";
 
-function OrderForm({ show, id, saveCarOROrder, idCar }) {
+function OrderForm({ show, customerID, saveCarOROrder, idCar, changeShowFormOrder }) {
   const [customer, onChange] = useState({
-    id,
+    customerID,
     idCar,
     amount: "",
     status: "",
@@ -16,13 +16,11 @@ function OrderForm({ show, id, saveCarOROrder, idCar }) {
 
   const [submit, setSubmit] = useState({
     amount: false,
-    status: false,
-    date_created: false
+    status: false
   });
   const [error, setError] = useState({
     amount: null,
-    status: null,
-    date_created: null
+    status: null
   });
 
   const arr = [
@@ -98,7 +96,26 @@ function OrderForm({ show, id, saveCarOROrder, idCar }) {
             type="button"
             className="submitForm"
             onClick={() => {
+              changeShowFormOrder(false);
               saveCarOROrder("order", customer);
+              onChange({
+                ...customer,
+                amount: "",
+                status: "",
+                date_created: ""
+              });
+              setSubmit({
+                ...submit,
+                amount: false,
+                status: false,
+                date_created: false
+              });
+              setError({
+                ...error,
+                amount: null,
+                status: null,
+                date_created: null
+              });
             }}
           >
             Save order

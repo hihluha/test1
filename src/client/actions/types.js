@@ -13,7 +13,9 @@ export const GET_NEW_CUSTOMERS = "GET_NEW_CUSTOMERS";
 export const EDIT_CAR = "EDIT_CAR";
 export const DELETE_CAR = "DELETE_CAR";
 export const SAVE_CAR = "SAVE_CAR";
+export const GET_CARS = "GET_CARS";
 //order
 export const EDIT_ORDER = "EDIT_ORDER";
 export const DELETE_ORDER = "DELETE_ORDER";
 export const SAVE_ORDER = "SAVE_ORDER";
+export const GET_ORDERS = "GET_ORDERS";

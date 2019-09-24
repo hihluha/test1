@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const CarSchema = new Schema({
-  _id: Schema.Types.ObjectId,
   make: {
       type: String
   },
@@ -16,14 +15,10 @@ const CarSchema = new Schema({
   vin: {
       type: Number,
   },
-    cars: {
+    customer: {
         type: Schema.Types.ObjectId,
         ref: "Customer"
-    },
-  orders: {
-    type: Schema.Types.ObjectId,
-    ref: "Order"
-  }
+    }
 });
 
 module.exports = mongoose.model("Car", CarSchema);

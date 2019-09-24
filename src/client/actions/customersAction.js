@@ -91,7 +91,7 @@ export function saveCustomer(customer, history) {
               payload: res.data
             });
             console.log(res.data._id, 'res_id');
-            history.push(`/customers/${res.data._id}`);
+            history.push(`/customers/${res.data[0]._id}`);
           });
       })
       .catch(err => {

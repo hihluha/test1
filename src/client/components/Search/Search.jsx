@@ -36,17 +36,15 @@ function Search(props) {
         checkCustomer(givenCustomer, history);
 
         onChange({ ...customer, firstName: "", lastName: "" });
-        setSubmit({...submit, firstName: false, lastName: false });
-        setError({...error, firstName: null, lastName: null });
+        setSubmit({ ...submit, firstName: false, lastName: false });
+        setError({ ...error, firstName: null, lastName: null });
       }}
     >
       <div className="logForm">
         <h3>Please, enter customer's First Name and Last Name.</h3>
         <div className="fields">
           <p className="errors">
-            {error.firstName || error.lastName !== ""
-              ? error.firstName || error.lastName
-              : null}
+            {error.firstName !== "" ? error.firstName : null}
           </p>
           <p className={errors === null ? "errorsNo" : " errors"}>{errors}</p>
           <input
@@ -68,6 +66,9 @@ function Search(props) {
               );
             }}
           />
+          <p className="errors">
+            {error.lastName !== "" ? error.lastName : null}
+          </p>
           <input
             className="inputFields"
             type="text"
@@ -121,7 +122,7 @@ function Search(props) {
 
 const mapStateToProps = state => {
   return {
-    errors: state.customer.errors,
+    errors: state.customer.errors
   };
 };
 
@@ -129,7 +130,9 @@ const mapDispatchToProps = {
   checkCustomer
 };
 
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Search));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Search)
+);
