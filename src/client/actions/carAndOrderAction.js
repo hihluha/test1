@@ -84,7 +84,7 @@ export function saveCarOROrder(name, data) {
 }
 
 export function editCarOROrder(name, id, data) {
-  const urlWorkEdit =
+    const urlWorkEdit =
     name === "car"
       ? "http://localhost:5000/orders/editcar"
       : "http://localhost:5000/orders/editorder";

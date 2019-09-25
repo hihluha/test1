@@ -17,8 +17,7 @@ const initialState = {
   isEditedCar: false,
   isDeletedCar: false,
   isEditedOrder: false,
-  isDeletedOrder: false,
-  changeToForm: false
+  isDeletedOrder: false
 };
 
 export default (state = initialState, action) => {
@@ -28,8 +27,7 @@ export default (state = initialState, action) => {
         ...state,
         cars: action.payload,
         isEditedCar: false,
-        isDeletedCar: false,
-        changeToForm: false
+        isDeletedCar: false
       };
     case SAVE_CAR:
       return {
@@ -53,21 +51,18 @@ export default (state = initialState, action) => {
         ...state,
         orders: action.payload,
         isEditedOrder: false,
-        isDeletedOrder: false,
-        changeToForm: false
+        isDeletedOrder: false
       };
     case SAVE_ORDER:
       return {
         ...state,
         orders: [...state.orders, action.payload],
-        changeToForm: false
       };
     case EDIT_ORDER:
       return {
         ...state,
         orders: [...state.orders, action.payload],
-        isEditedOrder: true,
-        changeToForm: true
+        isEditedOrder: true
       };
     case DELETE_ORDER:
       return {

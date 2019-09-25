@@ -74,6 +74,7 @@ function OrderForm({
             value={customer.amount}
             placeholder="Enter order amount"
             onChange={e => {
+              e.target.value = e.target.value.replace(/^[0-9]{16}$/, "");
               checkErrors(
                 e,
                 "amount",

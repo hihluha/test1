@@ -2,17 +2,28 @@ import React, { useState } from "react";
 import connect from "react-redux/es/connect/connect";
 
 import { checkErrors } from "../../utils/checkErrors";
-import { saveCarOROrder } from "../../actions/carAndOrderAction";
+import {
+  saveCarOROrder,
+  editCarOROrder
+} from "../../actions/carAndOrderAction";
 
 import "../Login/Login.css";
 
-function CarForm({ show, changeShowForm, saveCarOROrder, customerID }) {
+function CarForm({
+  showFormCar,
+  changeShowFormCar,
+  showFormCarId,
+  changeShowFormCarId,
+  editCarOROrder,
+  saveCarOROrder,
+  customerID
+}) {
   const [customer, onChange] = useState({
     customerID,
-    makeCar: "",
-    modelCar: "",
-    yearCar: "",
-    vinCar: ""
+    makeCar: showFormCarId.make !== "" ? showFormCarId.make : "",
+    modelCar: showFormCarId.model !== "" ? showFormCarId.model : "",
+    yearCar: showFormCarId.year !== "" ? showFormCarId.year : "",
+    vinCar: showFormCarId.vin !== "" ? showFormCarId.vin : ""
   });
 
   const [submit, setSubmit] = useState({
@@ -29,7 +40,13 @@ function CarForm({ show, changeShowForm, saveCarOROrder, customerID }) {
   });
 
   return (
-    <div className={ show ? "logForm form" : "hide"}>
+    <div
+      className={
+        showFormCarId.make !== "" || showFormCar.status
+          ? "logForm form"
+          : "hide"
+      }
+    >
       <div className="fields">
         <h2>Please, add car data</h2>
         <p className="errors">{error.makeCar !== "" ? error.makeCar : null}</p>
@@ -127,8 +144,23 @@ function CarForm({ show, changeShowForm, saveCarOROrder, customerID }) {
           // }
           type="button"
           onClick={() => {
-            saveCarOROrder("car", customer);
-              changeShowForm(false);
+            changeShowFormCarId({
+              ...showFormCarId,
+              make: "",
+              model: "",
+              year: "",
+              vin: ""
+            });
+            changeShowFormCar({
+              ...showFormCar,
+              target: "",
+              status: false
+            });
+            {
+              showFormCar.target === "new"
+                ? saveCarOROrder("car", customer)
+                : editCarOROrder("car", showFormCar.target, customer);
+            }
             onChange({
               ...customer,
               makeCar: "",
@@ -152,7 +184,7 @@ function CarForm({ show, changeShowForm, saveCarOROrder, customerID }) {
             });
           }}
         >
-          Save
+          {showFormCar.target === "new" ? "Save" : "Edit car"}
         </button>
       </div>
     </div>
@@ -160,7 +192,8 @@ function CarForm({ show, changeShowForm, saveCarOROrder, customerID }) {
 }
 
 const mapDispatchToProps = {
-  saveCarOROrder
+  saveCarOROrder,
+  editCarOROrder
 };
 
 export default connect(

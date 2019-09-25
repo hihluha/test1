@@ -47,25 +47,24 @@ exports.editOrder = (req, res) => {
         { new: true },
         (err, updateOrder) => {
             if (err) return res.send(err);
-            console.log(updateOrder, "update");
             res.send(updateOrder);
         }
     );
 };
 
 exports.editCar = (req, res) => {
+    console.log(req.body.id);
     Car.findByIdAndUpdate(
         {_id: req.body.id},
         {
-            make: req.body.makeCar,
-            model: req.body.modelCar,
-            year: req.body.yearCar,
-            vin: req.body.vinCar
+            make: req.body.data.makeCar,
+            model: req.body.data.modelCar,
+            year: req.body.data.yearCar,
+            vin: req.body.data.vinCar
         },
         { new: true },
         (err, updateCar) => {
             if (err) return res.send(err);
-            console.log(updateCar, "update");
             res.send(updateCar);
         }
     );

@@ -3,7 +3,6 @@ import connect from "react-redux/es/connect/connect";
 import { withRouter } from "react-router-dom";
 
 import {
-  editCarOROrder,
   deleteCarOROrder,
   getOrders,
   getCars
@@ -15,23 +14,19 @@ import OrderForm from "../CarForm/OrderForm";
 import "./OneCustomer.css";
 
 function OneCustomer({
-  location,
-  history,
   match,
   customer,
   cars,
   getCars,
   orders,
   getOrders,
-  editCarOROrder,
   deleteCarOROrder,
   isEditedCar,
   isDeletedCar,
   isEditedOrder,
-  isDeletedOrder,
-  changeToForm
+  isDeletedOrder
 }) {
-  const [showForm, changeShowForm] = useState(false);
+
   const [showFormOrder, changeShowFormOrder] = useState({
     target: "",
     status: false
@@ -40,18 +35,25 @@ function OneCustomer({
     status: "",
     amount: ""
   });
+  const [showFormCar, changeShowFormCar] = useState({
+    target: "",
+    status: false
+  });
+  const [showFormCarId, changeShowFormCarId] = useState({
+    make: "",
+    model: "",
+    year: "",
+    vin: ""
+  });
 
   useEffect(() => {
     getOrders();
     getCars();
   }, [isEditedCar, isDeletedCar, isEditedOrder, isDeletedOrder]);
 
-
-
   const carForm =
     cars !== null
       ? cars.map(car => {
-
           const ordersForCar =
             orders !== null
               ? orders.map(order => {
@@ -110,9 +112,9 @@ function OneCustomer({
               : "There are no orders";
 
           if (customer !== null && customer[0]._id === car.customer) {
-
-              return (
+            return (
               <div className="customerCard">
+                  {showFormCar.target !== car._id ? (
                 <div className="carContainer">
                   <li className="header" key={car._id}>
                     <h3>{`${car.make} ${car.model}, ${car.year}`}</h3>
@@ -122,7 +124,18 @@ function OneCustomer({
                     <button
                       className="btn"
                       onClick={() => {
-                        editCarOROrder("car", car._id);
+                        changeShowFormCar({
+                          ...showFormCar,
+                          target: car._id,
+                          status: true
+                        });
+                        changeShowFormCarId({
+                          ...showFormCarId,
+                          make: car.make,
+                          model: car.model,
+                          year: car.year,
+                          vin: car.vin
+                        });
                       }}
                     >
                       Edit
@@ -136,7 +149,13 @@ function OneCustomer({
                       Delete
                     </button>
                   </div>
-                </div>
+                </div>) :   <CarForm
+                      showFormCarId={showFormCarId}
+                      changeShowFormCarId={changeShowFormCarId}
+                      showFormCar={showFormCar}
+                      changeShowFormCar={changeShowFormCar}
+                      customerID={match.params.id}
+                  /> }
                 {ordersForCar}
                 {showFormOrder.target === car._id ? (
                   <OrderForm
@@ -191,19 +210,38 @@ function OneCustomer({
           {cars === null || cars.length === 0 ? (
             <h3>There are no cars</h3>
           ) : (
-            <ol className="customerCard">{carForm}</ol>
+            <ol className="customerCard">
+                {carForm}
+            </ol>
           )}
         </li>
-        <CarForm
-          show={showForm}
-          changeShowForm={changeShowForm}
-          customerID={match.params.id}
-        />
+          {showFormCar.target === 'new' ? (
+              <CarForm
+                  showFormCarId={showFormCarId}
+                  changeShowFormCarId={changeShowFormCarId}
+                  showFormCar={showFormCar}
+                  changeShowFormCar={changeShowFormCar}
+                  customerID={match.params.id}
+              />
+          ) : null}
+
         <button
           className="submitForm add"
           type="submit"
           onClick={() => {
-            changeShowForm(!showForm);
+              {
+                  !showFormCar.status
+                      ? changeShowFormCar({
+                          ...showFormCar,
+                          target: "new",
+                          status: true
+                      })
+                      : changeShowFormCar({
+                          ...showFormCar,
+                          target: "",
+                          status: false
+                      });
+              }
           }}
         >
           Add Car
@@ -222,13 +260,11 @@ const mapStateToProps = state => {
     isEditedCar: state.carAndOrder.isEditedCar,
     isEditedOrder: state.carAndOrder.isEditedOrder,
     isDeletedCar: state.carAndOrder.isDeletedCar,
-    isDeletedOrder: state.carAndOrder.isDeletedOrder,
-    changeToForm: state.carAndOrder.changeToForm
+    isDeletedOrder: state.carAndOrder.isDeletedOrder
   };
 };
 
 const mapDispatchToProps = {
-  editCarOROrder,
   deleteCarOROrder,
   getOrders,
   getCars
