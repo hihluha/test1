@@ -13,16 +13,22 @@ import {
 const initialState = {
   cars: null,
   orders: null,
-  errors: null
+  errors: null,
+  isEditedCar: false,
+  isDeletedCar: false,
+  isEditedOrder: false,
+  isDeletedOrder: false
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-      case GET_CARS:
-          return {
-              ...state,
-              cars: action.payload
-          };
+    case GET_CARS:
+      return {
+        ...state,
+        cars: action.payload,
+        isEditedCar: false,
+        isDeletedCar: false
+      };
     case SAVE_CAR:
       return {
         ...state,
@@ -31,17 +37,21 @@ export default (state = initialState, action) => {
     case EDIT_CAR:
       return {
         ...state,
-        cars: [...state.cars, action.payload]
+        cars: [...state.cars, action.payload],
+        isEditedCar: true
       };
     case DELETE_CAR:
       return {
         ...state,
-        cars: [...state.cars.filter(val => val.id !== action.payload)]
+        cars: [...state.cars.filter(val => val.id !== action.payload)],
+        isDeletedCar: true
       };
     case GET_ORDERS:
       return {
         ...state,
-        orders: action.payload
+        orders: action.payload,
+        isEditedOrder: false,
+        isDeletedOrder: false
       };
     case SAVE_ORDER:
       return {
@@ -51,12 +61,14 @@ export default (state = initialState, action) => {
     case EDIT_ORDER:
       return {
         ...state,
-        orders: [...state.orders, action.payload]
+        orders: [...state.orders, action.payload],
+        isEditedOrder: true
       };
     case DELETE_ORDER:
       return {
         ...state,
-        orders: [...state.orders.filter(val => val.id !== action.payload)]
+        orders: [...state.orders.filter(val => val.id !== action.payload)],
+        isDeletedOrder: true
       };
     case GET_ERRORS:
       return {

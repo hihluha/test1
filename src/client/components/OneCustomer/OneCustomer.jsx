@@ -24,15 +24,19 @@ function OneCustomer({
   orders,
   getOrders,
   editCarOROrder,
-  deleteCarOROrder
+  deleteCarOROrder,
+  isEditedCar,
+  isDeletedCar,
+  isEditedOrder,
+  isDeletedOrder
 }) {
   const [showForm, changeShowForm] = useState(false);
   const [showFormOrder, changeShowFormOrder] = useState(false);
 
   useEffect(() => {
     getOrders();
-      getCars();
-  }, []);
+    getCars();
+  }, [isEditedCar, isDeletedCar, isEditedOrder, isDeletedOrder]);
 
   const carForm =
     cars !== null
@@ -95,7 +99,6 @@ function OneCustomer({
                       className="btn"
                       onClick={() => {
                         deleteCarOROrder("car", car._id);
-                        getCars();
                       }}
                     >
                       Delete
@@ -103,6 +106,12 @@ function OneCustomer({
                   </div>
                 </div>
                 {ordersForCar}
+                <OrderForm
+                  show={showFormOrder}
+                  changeShowFormOrder={changeShowFormOrder}
+                  customerID={match.params.id}
+                  idCar={car._id}
+                />
                 <button
                   className="submitForm add"
                   type="submit"
@@ -112,12 +121,6 @@ function OneCustomer({
                 >
                   Add Order
                 </button>
-                <OrderForm
-                  show={showFormOrder}
-                  changeShowFormOrder={changeShowFormOrder}
-                  customerID={match.params.id}
-                  idCar={car._id}
-                />
               </div>
             );
           }
@@ -143,7 +146,11 @@ function OneCustomer({
             <ol className="customerCard">{carForm}</ol>
           )}
         </li>
-
+        <CarForm
+          show={showForm}
+          changeShowForm={changeShowForm}
+          customerID={match.params.id}
+        />
         <button
           className="submitForm add"
           type="submit"
@@ -154,12 +161,6 @@ function OneCustomer({
           Add Car
         </button>
       </ol>
-
-      <CarForm
-        show={showForm}
-        changeShowForm={changeShowForm}
-        customerID={match.params.id}
-      />
     </div>
   );
 }
@@ -169,7 +170,11 @@ const mapStateToProps = state => {
     customer: state.customer.customer,
     errors: state.customer.errors,
     cars: state.carAndOrder.cars,
-    orders: state.carAndOrder.orders
+    orders: state.carAndOrder.orders,
+    isEditedCar: state.carAndOrder.isEditedCar,
+    isEditedOrder: state.carAndOrder.isEditedOrder,
+    isDeletedCar: state.carAndOrder.isDeletedCar,
+    isDeletedOrder: state.carAndOrder.isDeletedOrder
   };
 };
 
