@@ -4,21 +4,21 @@ const { Schema } = mongoose;
 
 const CarSchema = new Schema({
   make: {
-      type: String
+    type: String
   },
   model: {
-      type: String
+    type: String
   },
   year: {
-      type: Number,
+    type: Number
   },
   vin: {
-      type: Number,
+    type: Number
   },
-    customer: {
-        type: Schema.Types.ObjectId,
-        ref: "Customer"
-    }
+  customer: {
+    type: Schema.Types.ObjectId,
+    ref: "Customer"
+  }
 });
 
 module.exports = mongoose.model("Car", CarSchema);

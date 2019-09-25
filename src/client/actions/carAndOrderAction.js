@@ -83,7 +83,7 @@ export function saveCarOROrder(name, data) {
   };
 }
 
-export function editCarOROrder(name, id) {
+export function editCarOROrder(name, id, data) {
   const urlWorkEdit =
     name === "car"
       ? "http://localhost:5000/orders/editcar"
@@ -94,7 +94,7 @@ export function editCarOROrder(name, id) {
       : EDIT_ORDER;
   return dispatch => {
     axios
-      .patch(urlWorkEdit, { id })
+      .patch(urlWorkEdit, { id, data })
       .then(res => {
         dispatch({
           type: typeChoose,

@@ -1,12 +1,23 @@
 import React, { useState } from "react";
 import connect from "react-redux/es/connect/connect";
 import { checkErrors } from "../../utils/checkErrors";
-import { saveCarOROrder } from "../../actions/carAndOrderAction";
+import {
+  saveCarOROrder,
+  editCarOROrder
+} from "../../actions/carAndOrderAction";
 
 import "../Login/Login.css";
 
-function OrderForm({ show, customerID, saveCarOROrder, idCar, changeShowFormOrder }) {
-
+function OrderForm({
+  showFormOrder,
+  customerID,
+  saveCarOROrder,
+  idCar,
+  changeShowFormOrder,
+  showFormOrderId,
+  changeShowFormOrderId,
+  editCarOROrder
+}) {
   const arr = [
     "января",
     "февраля",
@@ -30,8 +41,8 @@ function OrderForm({ show, customerID, saveCarOROrder, idCar, changeShowFormOrde
   const [customer, onChange] = useState({
     customerID,
     idCar,
-    amount: "",
-    status: "",
+    amount: showFormOrderId.amount !== "" ? showFormOrderId.amount : "",
+    status: showFormOrderId.status !== "" ? showFormOrderId.status : "",
     date_created: fullDate
   });
 
@@ -45,10 +56,17 @@ function OrderForm({ show, customerID, saveCarOROrder, idCar, changeShowFormOrde
   });
 
   return (
-    <div className={show ? "logForm form" : "hide"}>
+    <div
+      className={
+        showFormOrderId.status !== "" || showFormOrder.status
+          ? "logForm form"
+          : "hide"
+      }
+    >
       <div className="logForm form">
         <div className="fields">
           <h2>Please, add order to related car</h2>
+          <p className="errors">{error.amount !== "" ? error.amount : null}</p>
           <input
             className="inputFields"
             type="number"
@@ -97,8 +115,21 @@ function OrderForm({ show, customerID, saveCarOROrder, idCar, changeShowFormOrde
             type="button"
             className="submitForm"
             onClick={() => {
-              changeShowFormOrder(false);
-              saveCarOROrder("order", customer);
+              changeShowFormOrderId({
+                ...showFormOrderId,
+                status: "",
+                amount: ""
+              });
+              changeShowFormOrder({
+                ...showFormOrder,
+                target: "",
+                status: false
+              });
+              {
+                showFormOrderId.status === ""
+                  ? saveCarOROrder("order", customer)
+                  : editCarOROrder("order", showFormOrder.target, customer);
+              }
               onChange({
                 ...customer,
                 amount: "",
@@ -119,7 +150,7 @@ function OrderForm({ show, customerID, saveCarOROrder, idCar, changeShowFormOrde
               });
             }}
           >
-            Save order
+            {showFormOrderId.status === "" ? "Save order" : "Edit order"}
           </button>
         </div>
       </div>
@@ -128,7 +159,11 @@ function OrderForm({ show, customerID, saveCarOROrder, idCar, changeShowFormOrde
 }
 
 const mapDispatchToProps = {
-    saveCarOROrder
+  saveCarOROrder,
+  editCarOROrder
 };
 
-export default connect(null, mapDispatchToProps)(OrderForm);
+export default connect(
+  null,
+  mapDispatchToProps
+)(OrderForm);

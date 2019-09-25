@@ -25,6 +25,7 @@
   bottom: 0;
   right: 0;
   left: 0;
+  cursor: pointer;
 }
 .add {
   width: 20%;
@@ -36,6 +37,10 @@
 }
 .hideNum {
   list-style-type: none;
+}
+.disable {
+  opacity: .5;
+  cursor: not-allowed;
 }
 
 

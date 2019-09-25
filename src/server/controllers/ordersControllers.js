@@ -37,11 +37,12 @@ exports.saveOrder = (req, res) => {
 
 
 exports.editOrder = (req, res) => {
+    console.log(req.body.id);
     Order.findByIdAndUpdate(
         {_id: req.body.id},
         {
-            amount: req.body.amount,
-            status: req.body.status
+            amount: req.body.data.amount,
+            status: req.body.data.status
         },
         { new: true },
         (err, updateOrder) => {

@@ -28,50 +28,81 @@ function OneCustomer({
   isEditedCar,
   isDeletedCar,
   isEditedOrder,
-  isDeletedOrder
+  isDeletedOrder,
+  changeToForm
 }) {
   const [showForm, changeShowForm] = useState(false);
-  const [showFormOrder, changeShowFormOrder] = useState(false);
+  const [showFormOrder, changeShowFormOrder] = useState({
+    target: "",
+    status: false
+  });
+  const [showFormOrderId, changeShowFormOrderId] = useState({
+    status: "",
+    amount: ""
+  });
 
   useEffect(() => {
     getOrders();
     getCars();
   }, [isEditedCar, isDeletedCar, isEditedOrder, isDeletedOrder]);
 
+
+
   const carForm =
     cars !== null
       ? cars.map(car => {
+
           const ordersForCar =
             orders !== null
               ? orders.map(order => {
                   if (car._id === order.cars) {
                     return (
                       <ol className="customerCard">
-                        <div className="carContainer">
-                          <li className="header">
-                            <h3>{order.amount}</h3>
-                            <h3>{order.status}</h3>
-                            <h3>{order.date_created}</h3>
-                          </li>
-                          <div className="btnContainer">
-                            <button
-                              className="btn"
-                              onClick={() => {
-                                editCarOROrder("order", order._id);
-                              }}
-                            >
-                              Edit
-                            </button>
-                            <button
-                              className="btn"
-                              onClick={() => {
-                                deleteCarOROrder("order", order._id);
-                              }}
-                            >
-                              Delete
-                            </button>
+                        {showFormOrder.target !== order._id ? (
+                          <div className="carContainer">
+                            <li className="header">
+                              <h3>{order.amount}</h3>
+                              <h3>{order.status}</h3>
+                              <h3>{order.date_created}</h3>
+                            </li>
+                            <div className="btnContainer">
+                              <button
+                                className="btn"
+                                onClick={() => {
+                                  changeShowFormOrder({
+                                    ...showFormOrder,
+                                    target: order._id,
+                                    status: true
+                                  });
+                                  changeShowFormOrderId({
+                                    ...showFormOrderId,
+                                    status: order.status,
+                                    amount: order.amount
+                                  });
+                                }}
+                              >
+                                Edit
+                              </button>
+                              <button
+                                className="btn"
+                                onClick={() => {
+                                  deleteCarOROrder("order", order._id);
+                                }}
+                              >
+                                Delete
+                              </button>
+                            </div>
                           </div>
-                        </div>
+                        ) : (
+                          <OrderForm
+                            showFormOrderId={showFormOrderId}
+                            changeShowFormOrderId={changeShowFormOrderId}
+                            showFormOrder={showFormOrder}
+                            changeShowFormOrder={changeShowFormOrder}
+                            customerID={match.params.id}
+                            idCar={car._id}
+                          />
+                        )}
                       </ol>
                     );
                   }
@@ -79,7 +110,8 @@ function OneCustomer({
               : "There are no orders";
 
           if (customer !== null && customer[0]._id === car.customer) {
-            return (
+
+              return (
               <div className="customerCard">
                 <div className="carContainer">
                   <li className="header" key={car._id}>
@@ -96,7 +128,7 @@ function OneCustomer({
                       Edit
                     </button>
                     <button
-                      className="btn"
+                      className={"btn"}
                       onClick={() => {
                         deleteCarOROrder("car", car._id);
                       }}
@@ -106,17 +138,33 @@ function OneCustomer({
                   </div>
                 </div>
                 {ordersForCar}
-                <OrderForm
-                  show={showFormOrder}
-                  changeShowFormOrder={changeShowFormOrder}
-                  customerID={match.params.id}
-                  idCar={car._id}
-                />
+                {showFormOrder.target === car._id ? (
+                  <OrderForm
+                    showFormOrderId={showFormOrderId}
+                    changeShowFormOrderId={changeShowFormOrderId}
+                    showFormOrder={showFormOrder}
+                    changeShowFormOrder={changeShowFormOrder}
+                    customerID={match.params.id}
+                    idCar={car._id}
+                  />
+                ) : null}
                 <button
                   className="submitForm add"
                   type="submit"
                   onClick={() => {
-                    changeShowFormOrder(!showFormOrder);
+                    {
+                      !showFormOrder.status
+                        ? changeShowFormOrder({
+                            ...showFormOrder,
+                            target: car._id,
+                            status: true
+                          })
+                        : changeShowFormOrder({
+                            ...showFormOrder,
+                            target: "",
+                            status: false
+                          });
+                    }
                   }}
                 >
                   Add Order
@@ -174,7 +222,8 @@ const mapStateToProps = state => {
     isEditedCar: state.carAndOrder.isEditedCar,
     isEditedOrder: state.carAndOrder.isEditedOrder,
     isDeletedCar: state.carAndOrder.isDeletedCar,
-    isDeletedOrder: state.carAndOrder.isDeletedOrder
+    isDeletedOrder: state.carAndOrder.isDeletedOrder,
+    changeToForm: state.carAndOrder.changeToForm
   };
 };
 
