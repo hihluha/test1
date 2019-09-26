@@ -26,7 +26,6 @@ function OneCustomer({
   isEditedOrder,
   isDeletedOrder
 }) {
-
   const [showFormOrder, changeShowFormOrder] = useState({
     target: "",
     status: false
@@ -114,48 +113,51 @@ function OneCustomer({
           if (customer !== null && customer[0]._id === car.customer) {
             return (
               <div className="customerCard">
-                  {showFormCar.target !== car._id ? (
-                <div className="carContainer">
-                  <li className="header" key={car._id}>
-                    <h3>{`${car.make} ${car.model}, ${car.year}`}</h3>
-                    <h3>"VinCode:" {car.vin}</h3>
-                  </li>
-                  <div className="btnContainer">
-                    <button
-                      className="btn"
-                      onClick={() => {
-                        changeShowFormCar({
-                          ...showFormCar,
-                          target: car._id,
-                          status: true
-                        });
-                        changeShowFormCarId({
-                          ...showFormCarId,
-                          make: car.make,
-                          model: car.model,
-                          year: car.year,
-                          vin: car.vin
-                        });
-                      }}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className={"btn"}
-                      onClick={() => {
-                        deleteCarOROrder("car", car._id);
-                      }}
-                    >
-                      Delete
-                    </button>
+                {showFormCar.target !== car._id ? (
+                  <div className="carContainer">
+                    <li className="header" key={car._id}>
+                      <h3>{`${car.make} ${car.model}, ${car.year}`}</h3>
+                      <h3>"VinCode:" {car.vin}</h3>
+                    </li>
+                    <div className="btnContainer">
+                      <button
+                        className="btn"
+                        onClick={() => {
+                          changeShowFormCar({
+                            ...showFormCar,
+                            target: car._id,
+                            status: true
+                          });
+                          changeShowFormCarId({
+                            ...showFormCarId,
+                            make: car.make,
+                            model: car.model,
+                            year: car.year,
+                            vin: car.vin
+                          });
+                        }}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className={"btn"}
+                        onClick={() => {
+                          deleteCarOROrder("car", car._id);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
-                </div>) :   <CarForm
-                      showFormCarId={showFormCarId}
-                      changeShowFormCarId={changeShowFormCarId}
-                      showFormCar={showFormCar}
-                      changeShowFormCar={changeShowFormCar}
-                      customerID={match.params.id}
-                  /> }
+                ) : (
+                  <CarForm
+                    showFormCarId={showFormCarId}
+                    changeShowFormCarId={changeShowFormCarId}
+                    showFormCar={showFormCar}
+                    changeShowFormCar={changeShowFormCar}
+                    customerID={match.params.id}
+                  />
+                )}
                 {ordersForCar}
                 {showFormOrder.target === car._id ? (
                   <OrderForm
@@ -210,38 +212,36 @@ function OneCustomer({
           {cars === null || cars.length === 0 ? (
             <h3>There are no cars</h3>
           ) : (
-            <ol className="customerCard">
-                {carForm}
-            </ol>
+            <ol className="customerCard">{carForm}</ol>
           )}
         </li>
-          {showFormCar.target === 'new' ? (
-              <CarForm
-                  showFormCarId={showFormCarId}
-                  changeShowFormCarId={changeShowFormCarId}
-                  showFormCar={showFormCar}
-                  changeShowFormCar={changeShowFormCar}
-                  customerID={match.params.id}
-              />
-          ) : null}
+        {showFormCar.target === "new" ? (
+          <CarForm
+            showFormCarId={showFormCarId}
+            changeShowFormCarId={changeShowFormCarId}
+            showFormCar={showFormCar}
+            changeShowFormCar={changeShowFormCar}
+            customerID={match.params.id}
+          />
+        ) : null}
 
         <button
           className="submitForm add"
           type="submit"
           onClick={() => {
-              {
-                  !showFormCar.status
-                      ? changeShowFormCar({
-                          ...showFormCar,
-                          target: "new",
-                          status: true
-                      })
-                      : changeShowFormCar({
-                          ...showFormCar,
-                          target: "",
-                          status: false
-                      });
-              }
+            {
+              !showFormCar.status
+                ? changeShowFormCar({
+                    ...showFormCar,
+                    target: "new",
+                    status: true
+                  })
+                : changeShowFormCar({
+                    ...showFormCar,
+                    target: "",
+                    status: false
+                  });
+            }
           }}
         >
           Add Car

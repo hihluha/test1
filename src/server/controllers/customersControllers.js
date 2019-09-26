@@ -6,17 +6,14 @@ const Car = require("../models/Car");
 exports.all = (req, res) => {
   Customer.find({}, (err, customers) => {
     if (err) throw err;
-    console.log(customers);
     res.status(200).send(customers);
   })
       .sort({ firstName: -1 })
 };
 
 exports.new = (req, res) => {
-  console.log(req.query.email);
   Customer.findOne({email: req.query.email}, (err, customer) => {
     if (err) throw err;
-    console.log(customer);
     res.status(200).send([customer]);
   })
 };
@@ -38,7 +35,6 @@ exports.saveCar = (req, res) => {
 };
 
 exports.customer = (req, res) => {
-  console.log(req.query.id);
   Customer.findById({_id: req.query.id}, (err, customer) => {
     if (err) throw err;
     res.status(200).send([customer]);
@@ -51,7 +47,6 @@ exports.search = (req, res) => {
   const lastName = req.body.lastName;
   if (findByValue !== "") {
     Customer.find({ firstName, lastName }, (err, user) => {
-      console.log(user, "user");
       if (err) throw err;
       if (!user) return res.status(404).send("No customer found");
       if (user.length === 0) return res.status(404).send("No customer found");
@@ -63,7 +58,7 @@ exports.search = (req, res) => {
 exports.save = (req, res) => {
   Customer.findOne({ email: req.body.email }, (err, customer) => {
     if (err) throw err;
-    // if (customer) return res.status(404).send("Email is existing");
+    if (customer) return res.status(404).send("Email is existing");
 
     const newCustomer = new Customer({
       _id: new mongoose.Types.ObjectId(),

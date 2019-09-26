@@ -34,7 +34,6 @@ router.post('/sign_in', passport.authenticate("local"), (req, res) => {
             req.body.password,
             user.password
         );
-        console.log(passwordIsValid, 'passwordIsValid');
         if (!passwordIsValid)
             return res.status(401).send( "Incorrect email or password" );
 

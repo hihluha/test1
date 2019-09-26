@@ -11,7 +11,7 @@ import OneCustomer from "./components/OneCustomer/OneCustomer";
 import Search from "./components/Search/Search";
 import AddNewCustomer from "./components/AddNewCustomer/AddNewCustomer";
 
-function App({ isAuth }) {
+function App() {
 
   return (
     <BrowserRouter>
@@ -31,7 +31,6 @@ function App({ isAuth }) {
 
 const mapStateToProps = state => {
   return {
-    isAuth: state.auth.isAuth,
     errors: state.auth.errors
   };
 };

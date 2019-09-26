@@ -17,8 +17,6 @@ const orders = require("./routes/order");
 
 const User = require("./models/User");
 
-// const vacanciesController = require("./src/controllers/vacanciesControllers");
-
 const port = process.env.PORT || 5000;
 
 const db = config.mongodbURI;
@@ -56,13 +54,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser((user, done) => {
-  console.log("serializeUser", user._id);
   done(null, user._id);
 });
 
 passport.deserializeUser((id, done) => {
   User.findById(id, (err, user) => {
-    console.log("deserializeUser", user);
     done(err, user);
   });
 });

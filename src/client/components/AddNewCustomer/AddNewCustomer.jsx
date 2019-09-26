@@ -6,19 +6,15 @@ import PropTypes from "prop-types";
 import { checkErrors } from "../../utils/checkErrors";
 import { saveCustomer } from "../../actions/customersAction";
 
-import CarForm from "../CarForm/CarForm";
-
 import "./AddNewCustomer.css";
 import "../Login/Login.css";
 
 function AddNewCustomer({
   location,
   history,
-  customers,
   saveCustomer,
   errors
 }) {
-  console.log(customers);
 
   const [customer, onChange] = useState({
     firstName: "",
@@ -45,8 +41,6 @@ function AddNewCustomer({
     phone: null,
     email: null
   });
-
-  console.log(error);
 
   return (
     <form
@@ -150,7 +144,6 @@ function AddNewCustomer({
             value={customer.dateOfBirth}
             placeholder="Enter customer date of birth"
             onChange={e => {
-              console.log(e.target.value);
               checkErrors(
                 e,
                 "dateOfBirth",
@@ -227,14 +220,12 @@ function AddNewCustomer({
               );
             }}
           />
-          {/*<CarForm show={true} location={location.pathname} />*/}
           <button
-            className="submitForm"
-            // className={
-            //   Object.values(error).every(item => item === "")
-            //     ? "submitForm"
-            //     : "disableSubmit"
-            // }
+            className={
+              Object.values(error).every(item => item === "")
+                ? "submitForm"
+                : "disableSubmit"
+            }
             type="submit"
           >
             Save

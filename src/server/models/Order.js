@@ -5,11 +5,11 @@ const { Schema } = mongoose;
 const OrderSchema = new Schema({
     amount: {
         type: Number,
-        // required: true
+        required: true
     },
     status: {
         type: String,
-        // required: true
+        required: true
     },
     customer: {
         type: Schema.Types.ObjectId,

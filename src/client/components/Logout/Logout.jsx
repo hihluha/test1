@@ -23,7 +23,6 @@ function LogOut({ history, logout }) {
                         className="exitFooterBtn"
                         type="button"
                         onClick={() => {
-                                console.log('logout');
                                 logout();
                                 history.push("/");
                             }

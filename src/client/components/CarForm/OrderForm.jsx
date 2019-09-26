@@ -87,14 +87,8 @@ function OrderForm({
               );
             }}
           />
-          <input
-            className="inputFields"
-            type="text"
-            name="status"
-            value={customer.status}
-            placeholder="Enter order status"
-            onChange={e => {
-              checkErrors(
+          <select  className="inputFields" value={customer.status} onChange={e => {
+            checkErrors(
                 e,
                 "status",
                 customer,
@@ -103,9 +97,12 @@ function OrderForm({
                 setSubmit,
                 submit,
                 error
-              );
-            }}
-          />
+            );
+          }} >
+            <option value="completed">Completed</option>
+            <option selected value='In progress'>In progress</option>
+            <option value='canceled'>Canceled</option>
+          </select>
           <label htmlFor="date">
             <h3 id="date">
               Order created at:

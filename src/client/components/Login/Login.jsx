@@ -26,7 +26,6 @@ function LogIn(props) {
 
     const {
         loginUser,
-        isAuth,
         history,
         errors
     } = props;
@@ -139,7 +138,6 @@ function LogIn(props) {
                     type="submit"
                 >
                      Войти
-                    {/*{isAuth ? history.push("/main") : null}*/}
                 </button>
                 <NavLink className='forgotPassword' to='#'>Забыли пароль?</NavLink>
             </div>

@@ -6,33 +6,33 @@ const CustomerSchema = new Schema({
   _id: Schema.Types.ObjectId,
   firstName: {
     type: String,
-    trim: true
-    // required: true
+    trim: true,
+    required: true
   },
   lastName: {
     type: String,
-    trim: true
-    // required: true
+    trim: true,
+    required: true
   },
   dateOfBirth: {
-    type: Date
-    // required: true
+    type: Date,
+    required: true
   },
   address: {
-    type: String
-    // required: true
+    type: String,
+    required: true
   },
   phone: {
-    type: String
-    // unique: true,
-    // required: true
+    type: String,
+    unique: true,
+    required: true
   },
   email: {
     type: String,
-    // unique: true,
-    // lowercase: true,
-    trim: true
-    // required: true
+    unique: true,
+    lowercase: true,
+    trim: true,
+    required: true
   },
   date_created: {
     type: Date,

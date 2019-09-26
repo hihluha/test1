@@ -59,7 +59,6 @@ export function checkCustomer(user, history) {
           type: CHECK_EXISTING_CUSTOMER,
           payload: res.data
         });
-        console.log(res.data, res.data);
         history.push(`/customers/${res.data[0]._id}`);
       })
       .catch(err => {
@@ -90,12 +89,10 @@ export function saveCustomer(customer, history) {
               type: GET_NEW_CUSTOMERS,
               payload: res.data
             });
-            console.log(res.data._id, 'res_id');
             history.push(`/customers/${res.data[0]._id}`);
           });
       })
       .catch(err => {
-        console.log(err, 'err');
         dispatch({
           type: GET_ERRORS,
           payload: err.request.response

@@ -25,9 +25,6 @@ const loadState = () => {
 
     return JSON.parse(serialisedState);
   } catch (err) {
-    // Return undefined if localStorage is not available,
-    // or data could not be de-serialised,
-    // or there was some other error
     return undefined;
   }
 };

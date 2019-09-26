@@ -136,12 +136,11 @@ function CarForm({
           }}
         />
         <button
-          className="submitForm"
-          // className={
-          //   Object.values(error).every(item => item === "")
-          //     ? "submitForm"
-          //     : "disableSubmit"
-          // }
+          className={
+            Object.values(error).every(item => item === "")
+              ? "submitForm"
+              : "disableSubmit"
+          }
           type="button"
           onClick={() => {
             changeShowFormCarId({

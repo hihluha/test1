@@ -37,7 +37,6 @@ exports.saveOrder = (req, res) => {
 
 
 exports.editOrder = (req, res) => {
-    console.log(req.body.id);
     Order.findByIdAndUpdate(
         {_id: req.body.id},
         {
@@ -53,7 +52,6 @@ exports.editOrder = (req, res) => {
 };
 
 exports.editCar = (req, res) => {
-    console.log(req.body.id);
     Car.findByIdAndUpdate(
         {_id: req.body.id},
         {
